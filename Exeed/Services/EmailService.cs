@@ -21,7 +21,7 @@ namespace Exeed.Services
             using (var client = new SmtpClient())
             {
                 await client.ConnectAsync("smtp.timeweb.ru", 465, true); 
-                await client.AuthenticateAsync("info@exeed2024.ru", "$zU8on$z$#cW");
+                await client.AuthenticateAsync("info@exeed2024.ru", "**************");
                 await client.SendAsync(emailMessage);
 
                 await client.DisconnectAsync(true);
