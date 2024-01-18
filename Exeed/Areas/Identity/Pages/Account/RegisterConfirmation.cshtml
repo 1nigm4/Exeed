@@ -1,0 +1,37 @@
+﻿@page
+@model RegisterConfirmationModel
+@{
+    ViewData["Title"] = "Регистрация";
+}
+
+<section class="form-section full">
+    <div class="section__bg pc" style="background-image: url(../../img/form/pc-bg.jpg)"></div>
+    <div class="section__bg xs" style="background-image: url(../../img/form/xs-bg.jpg)"></div>
+    <div class="container">
+        <form class="form__box" method="post">
+            <div class="form__inner">
+                <h2 class="s-title">Регистрация</h2>
+                <p style="color: green;text-align:center">Ссылка подтверждения регистрации отправлена на указанную почту</p>
+                <p></p>
+            </div>
+        </form>
+    </div>
+</section>
+
+@* <h1>@ViewData["Title"]</h1>
+@{
+    if (@Model.DisplayConfirmAccountLink)
+    {
+<p>
+    This app does not currently have a real email sender registered, see <a href="https://aka.ms/aspaccountconf">these docs</a> for how to configure a real email sender.
+    Normally this would be emailed: <a id="confirm-link" href="@Model.EmailConfirmationUrl">Click here to confirm your account</a>
+</p>
+    }
+    else
+    {
+<p>
+        Please check your email to confirm your account.
+</p>
+    }
+} *@
+

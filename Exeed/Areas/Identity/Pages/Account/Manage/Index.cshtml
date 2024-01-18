@@ -1,0 +1,126 @@
+﻿@page
+@inject Exeed.Managers.AccountManager AccountManager
+@model IndexModel
+@{
+    ViewData["Title"] = "Личный кабинет";
+    ViewData["ActivePage"] = ManageNavPages.Index;
+    var account = await AccountManager.GetAsync(User);
+    string phoneNumber = account.User.PhoneNumber;
+    phoneNumber = phoneNumber.Split("-")[0] + "-**-**";
+}
+
+<section class="cabinet-section">
+    <div class="container">
+        <h1 class="s-title">Личный кабинет</h1>
+        <div class="user__box">
+            <div class="user__info user__column">
+                <div class="user__title">Данные кабинета</div>
+                <div class="user__info-item">
+                    <div class="title">Имя:</div>
+                    <div class="value">@account.FirstName</div>
+                </div>
+                <div class="user__info-item">
+                    <div class="title">Телефон:</div>
+                    <div class="value">@phoneNumber</div>
+                </div>
+                <div class="user__info-item">
+                    <div class="title">Email:</div>
+                    <div class="value">@account.User.Email</div>
+                </div>
+                <div class="user__info-item" style="width: 100%;">
+                    <form asp-page="./Index" asp-page-handler="Logout" method="post" style="width: 100%;">
+                        <button class="t-btn brown" style="width: 100%;">
+                            <span>Выйти из аккаунта</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <form class="user__desire user__column" id="frm" method="post" enctype="multipart/form-data">
+                <div class="user__title">Ваше желание</div>
+                <div class="user__desire-text" style="min-height: 15rem;">@account.Desire.Text</div>
+                @if ((account.Desire?.IsVerified ?? false) || account.Role == Exeed.Data.Models.Role.Moderator)
+                {
+                    <a class="t-btn brown" asp-area="Identity" asp-page="/Account/Manage/Desires" style="color: white"><span>Перейти к желаниям</span></a>
+                }
+                else if (account.Desire?.PhotoPath != null)
+                {
+                    <a class="t-btn brown" asp-area="Identity" asp-page="/Account/Manage/Desires" style="color: white">
+                        <div style="text-align:center">
+                            <span>Перейти к желаниям</span>
+                            <h6 style="font-size:0.9rem">Ваше желание модерируется</h6>
+                        </div>
+                    </a>
+                }
+                else
+                {
+                    <label class="t-btn brown">
+                        <div class="label__text">
+                            <span>Прикрепить фотографию и выложить желание</span>
+                            <img src="~/img/icons/fi_image.svg" alt="">
+                        </div>
+                        <input type="file" asp-for="Input.Photo" id="sbm">
+                    </label>
+                }
+            </form>
+            @* <div class="user__gifts user__column">
+                <div class="user__title">Ваши подарок</div>
+                <div class="user__gifts-box">
+                    <div class="gift__item">
+                        <img class="icon" src="~/img/icons/fi_gift.svg" alt="">
+                        <div class="title">
+                            Подписка на Яндекс.Музыку на&nbsp;1&nbsp;мес. + новогодний плейлист от
+                            EXEED
+                        </div>
+                    </div>
+                    <div class="gift__item">
+                        <img class="icon" src="~/img/icons/fi_gift.svg" alt="">
+                        <div class="title">
+                            Бесплатный билет
+                            <br>на посещение
+                            <br>катка в ГУМ
+                        </div>
+                    </div>
+                    <div class="gift__item">
+                        <img class="icon" src="~/img/icons/fi_gift.svg" alt="">
+                        <div class="title">
+                            Сувенир
+                            <br>от бренда -
+                            <br>новогодние свечи
+                        </div>
+                    </div>
+                </div>
+            </div> *@
+        </div>
+    </div>
+</section>
+
+@* <h3>@ViewData["Title"]</h3>
+<partial name="_StatusMessage" for="StatusMessage" />
+<div class="row">
+    <div class="col-md-6">
+        <form id="profile-form" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-floating">
+                <input asp-for="Username" class="form-control" disabled />
+                <label asp-for="Username" class="form-label"></label>
+            </div>
+            <div class="form-floating">
+                <input asp-for="Input.PhoneNumber" class="form-control" />
+                <label asp-for="Input.PhoneNumber" class="form-label"></label>
+                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+            </div>
+            <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
+        </form>
+    </div>
+</div>
+ *@
+@section Scripts {
+    <script type="text/javascript">
+        jQuery(function(){
+          $("#sbm").change(function(){ // событие выбора файла
+            $("#frm").submit(); // отправка формы
+          });
+        });
+    </script>
+    <partial name="_ValidationScriptsPartial" />
+}

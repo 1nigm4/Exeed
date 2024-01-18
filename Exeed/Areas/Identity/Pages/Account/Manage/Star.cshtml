@@ -1,0 +1,165 @@
+﻿@page
+@inject Exeed.Managers.AccountManager AccountManager
+@inject Microsoft.Extensions.Options.IOptions<Exeed.Models.Configuration> config
+@inject Exeed.Managers.WinnerManager WinnerManager
+@model Exeed.Areas.Identity.Pages.Account.Manage.StarModel
+@{
+    ViewData["Title"] = "EXEED";
+    var account = await AccountManager.GetAsync(User);
+}
+
+<section class="star-section">
+    <div class="section__bg pc" style="background-image: url(../../../img/star/pc-bg.jpg)"></div>
+    <div class="section__bg xs" style="background-image: url(../../../img/star/xs-bg.jpg)"></div>
+    <div class="container">
+        <h1 class="star__title t-title">@account?.FirstName, это <br><b>ваша звезда!</b></h1>
+        <div class="star__subtitle">
+            Ваше желание
+            <br>воплотится
+            <br>в жизнь в этом году!
+        </div>
+    </div>
+</section>
+<section class="gifts-section">
+    <div class="section__bg pc" style="background-image: url(../../../img/gifts/pc-bg.jpg)"></div>
+    <div class="section__bg xs" style="background-image: url(../../../img/gifts/xs-bg.jpg)"></div>
+    <div class="container">
+        <h1 class="s-title">Делайте фотографии <br>с&nbsp;EXEED и выигрывайте подарки</h1>
+        <div class="gifts__box">
+            <div class="gifts__item">
+                <img class="img pc" src="~/img/gifts/img-02.png" alt="">
+                <img class="img xs" src="~/img/gifts/img-02.png" alt="">
+                <div class="title">Бесплатный билет на&nbsp;посещение катка в ГУМе</div>
+            </div>
+            <div class="gifts__item">
+                <img class="img pc" src="~/img/gifts/img-03.png" alt="">
+                <img class="img xs" src="~/img/gifts/img-03.png" alt="">
+                <div class="title">
+                    Новогодние подарки
+                    <br>от&nbsp;бренда EXEED
+                </div>
+            </div>
+            <div class="gifts__item">
+                <img class="img pc" src="~/img/gifts/img-01.png" alt="">
+                <img class="img xs" src="~/img/gifts/img-01.png" alt="">
+                <div class="title"> Новогодний плейлист + 3&nbsp;месяца подписки на&nbsp;сервис VK&nbsp;Музыка </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="rules-section">
+    <div class="container">
+        <form class="rules__box" method="post" id="frm" enctype="multipart/form-data">
+            <div class="s-title">Правила участия</div>
+            <div class="rules__list">
+                <div class="rules__list-item item1" id="gallery-box">
+                    <div class="text">
+                        <b>Сделайте фотографию</b> рядом с&nbsp;одним из наших стендов и&nbsp;прикрепите к желанию<span class="number">1.</span>
+                    </div>
+                    <a href="~/img/gallery/map1.png" class="line-btn" data-lg-id="8297f9f2-36d0-40ec-969a-88dd48bdc36b">
+                        <span class="line">Посмотреть карту стендов</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="12" viewBox="0 0 11 12" fill="none" class="img-svg replaced-svg">
+                            <path d="M4.2018 0.5H0L6.7982 5.99009L0 11.5H4.2018L11 5.99009L4.2018 0.5Z" fill="white"></path>
+                        </svg>
+                    </a>
+                    <a href="~/img/gallery/map2.png" class="hidden-link" style="display: none"></a>
+                </div>
+                <div class="rules__list-item item2">
+                    <div class="text">
+                        <b>Подпишитесь на&nbsp;нашу группу</b> в&nbsp;Вконтакте<span class="number">2.</span>
+                    </div>
+                    <a class="line-btn-2" href="https://vk.com/exeedru"> <span class="line">Подписаться</span><img class="img-svg" src="~/img/icons/signin-arrow.svg" alt=""></a>
+                </div>
+                <path d="M4.2018 0.5H0L6.7982 5.99009L0 11.5H4.2018L11 5.99009L4.2018 0.5Z" fill="white"></path></svg></a>
+                <div class="rules__list-item item3">
+                    <div class="text">
+                        <b>Ставьте лайки</b> другим участникам, доступно максимально 3&nbsp;шт.
+                        <span class="number">3.</span>
+                    </div>
+                </div>
+                <div class="rules__list-item item4">
+                    <div class="text">
+                        <b>Следите за розыгрышами</b> каждую&nbsp;неделю<span class="number">4.</span>
+                    </div>
+                </div>
+            </div>
+            @if ((account.Desire?.IsVerified ?? false) || account.Role == Exeed.Data.Models.Role.Moderator)
+            {
+                <a class="t-btn brown" asp-area="Identity" asp-page="/Account/Manage/Desires" style="color: white"><span>Перейти к желаниям</span></a>
+            }
+            else if (account.Desire?.PhotoPath != null)
+            {
+                <a class="t-btn brown" asp-area="Identity" asp-page="/Account/Manage/Desires" style="color: white">
+                    <div style="text-align:center">
+                        <span>Перейти к желаниям</span>
+                        <h6 style="font-size:0.9rem">Ваше желание модерируется</h6>
+                    </div>
+                </a>
+            }
+            else
+            {
+                <label class="t-btn brown">
+                    <div class="label__text">
+                        <span>Прикрепить фотографию <br>и&nbsp;выложить желание</span>
+                        <img src="~/img/icons/fi_image2.svg" alt="">
+                        <input type="file" asp-for="Input.Photo" id="sbm">
+                    </div>
+                </label>
+            }
+        </form>
+    </div>
+</section>
+<section class="winners-section">
+    @* <div class="container">
+        <h1 class="s-title">Победитель еще не определен</h1>
+        <h3 s-title="" style="text-align: center; margin-top: 1rem;">Ближайший розыгрыш состоится 1&nbsp;января 2024&nbsp;года</h3>
+    </div> *@
+    <div class="container">
+        <h1 class="s-title">Победители прошлых розыгрышей</h1>
+        <h3 s-title="" style="text-align: center; margin-top: 1rem;">Следующий розыгрыш состоится @config.Value.EventDate</h3>
+        <div class="winners__box">
+            @{
+                var winners = await WinnerManager.GetWinnersAsync();
+                <div class="winners__column">
+                    <div class="title">Бесплатные билеты на каток</div>
+                    @foreach (var winner in winners.Where(w => w.Prize == Exeed.Data.Models.Prize.Ticket))
+                    {
+                        var acc = await AccountManager.GetAsync(winner.Desire);
+                        <div class="winner__name">@acc.FirstName</div>
+                    }
+                    
+                </div>
+                <div class="winners__column">
+                    <div class="title">Новогодние подарки</div>
+                    @foreach (var winner in winners.Where(w => w.Prize == Exeed.Data.Models.Prize.Gift))
+                    {
+                        var acc = await AccountManager.GetAsync(winner.Desire);
+                        <div class="winner__name">@acc.FirstName</div>
+                    }
+                </div>
+                <div class="winners__column">
+                    <div class="title">Новогодний плейлист +&nbsp;3&nbsp;мес.&nbsp;музыки</div>
+                    @foreach (var winner in winners.Where(w => w.Prize == Exeed.Data.Models.Prize.Music))
+                    {
+                        var acc = await AccountManager.GetAsync(winner.Desire);
+                        <div class="winner__name">@acc.FirstName</div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+@section Scripts{
+    <script type="text/javascript">
+        jQuery(function () {
+            $("#sbm").change(function () { // событие выбора файла
+                $("#frm").submit(); // отправка формы
+            });
+        });
+
+        lightGallery(document.getElementById('gallery-box'), {
+            selector: 'a'
+        });
+    </script>
+}

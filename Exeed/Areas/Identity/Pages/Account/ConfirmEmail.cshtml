@@ -1,0 +1,19 @@
+﻿@page
+@model ConfirmEmailModel
+@{
+    ViewData["Title"] = "Регистрация";
+}
+
+<section class="form-section full">
+    <div class="section__bg pc" style="background-image: url(../../img/form/pc-bg.jpg)"></div>
+    <div class="section__bg xs" style="background-image: url(../../img/form/xs-bg.jpg)"></div>
+    <div class="container">
+        <form class="form__box" method="post">
+            <div class="form__inner">
+                <h2 class="s-title">Регистрация</h2>
+                <p style="color: red;text-align:center">@Model.StatusMessage</p>
+                <p></p>
+            </div>
+        </form>
+    </div>
+</section>

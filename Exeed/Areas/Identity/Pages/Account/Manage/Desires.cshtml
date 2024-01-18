@@ -1,0 +1,67 @@
+﻿@page
+@inject Exeed.Managers.AccountManager AccountManager
+@model Exeed.Areas.Identity.Pages.Account.Manage.DesiresModel
+@{
+    ViewData["Title"] = "Желания";
+    var user = await AccountManager.GetAsync(User);
+}
+
+<section class="desires-section">
+    <div class="container">
+        <h1 class="s-title">
+            @(user.Role == Exeed.Data.Models.Role.Moderator ? "Модерация желаний" : "Желания с фотографиями участников")
+        </h1>
+        <div class="desires__box">
+            @for (int i = 0; i < Model.Desires.Count; i++)
+            {
+                var desire = Model.Desires[i];
+                var account = await AccountManager.GetAsync(desire);
+                if (desire == null || account == null) continue;
+                <div class="column">
+                    <div class="desires__item">
+                        <div class="desires__photo" style="background-image: url(../../..@desire.PhotoPath)">
+                            <div class="desire__text" style="height:10.5rem;max-height:10.5rem;min-height:10.5rem">@desire.Text</div>
+                        </div>
+                        @if (user.Role == Exeed.Data.Models.Role.User)
+                        {
+                            <div class="desires__footer">
+                                <div class="name">@account.FirstName</div>
+                                <div class="like">
+                                    <span>@desire.Likes.Count</span>
+                                    @if ((user.Desire?.IsVerified ?? false) && user.Desire != desire && !user.Likes.Any(l => l.Desire == desire) && user.Likes.Count < 3)
+                                    {
+                                        <form method="post" asp-page-handler="Like">
+                                            <input hidden value="@desire.Id" name="desireId">
+                                            <button><img src="~/img/icons/like.png" alt=""></button>
+                                        </form>
+                                    }
+                                    else if (user.Likes.Any(l => l.Desire == desire))
+                                    {
+                                        <img src="~/img/icons/blike.png" alt="">
+                                    }
+                                    else
+                                    {
+                                        <img src="~/img/icons/like.png" alt="">
+                                    }
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="desires__footer">
+                                <a asp-page="Desires" asp-page-handler="Verify" asp-route-desireId="@desire.Id" asp-route-isVerified="true"><img class="yes" src="~/img/icons/yes.svg" alt=""></a>
+                                <div class="name">@account.FirstName</div>
+                                <a asp-page="Desires" asp-page-handler="Verify" asp-route-desireId="@desire.Id" asp-route-isVerified="false"><img class="yes" src="~/img/icons/no.svg" alt=""></a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="line-btn show-desires" hidden>
+            <span class="line">показать еще</span>
+            <img class="img-svg" src="~/img/icons/signin-arrow.svg"
+                 alt="">
+        </div>
+    </div>
+</section>

@@ -1,0 +1,22 @@
+﻿@page
+@model Exeed.Areas.Identity.Pages.Account.Manage.DesireModel
+@{
+    ViewData["Title"] = "Желание";
+}
+
+<section class="form-section desire-section full">
+    <div class="section__bg pc" style="background-image: url(../../../img/form/pc-bg.jpg)"></div>
+    <div class="section__bg xs" style="background-image: url(../../../img/form/xs-bg.jpg)"></div>
+    <div class="container">
+        <form class="form__box" method="post">
+            <div class="form__inner">
+                <h2 class="s-title">Желание</h2>
+                <textarea class="t-input" asp-for="@Model.Text" placeholder="Введите свое желание на год! Уверены, что оно обязательно исполнится!" required></textarea>
+                <button class="t-btn brown" type="submit">
+                    <span>Отправить желание</span>
+                    <img class="img-svg" src="~/img/icons/signin-arrow.svg" alt="">
+                </button>
+            </div>
+        </form>
+    </div>
+</section>

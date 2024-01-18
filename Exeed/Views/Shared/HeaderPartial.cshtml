@@ -1,0 +1,32 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@{
+    bool isBlack = ViewData["Title"] switch
+    {
+        "Личный кабинет" => true,
+        "Политика конфиденциальности" => true,
+        "Правила проведения конкурса" => true,
+        "Желания" => true,
+        _ => false
+    };
+}
+
+<header class="header">
+    <div class="container">
+        <a class="header__logo" asp-controller="Home" asp-action="Index"> <img class="img-svg" src="@(isBlack ? "/img/logo-black.svg" : "/img/logo.svg")" alt=""></a>
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <a class="header__button user line-btn" asp-area="Identity" asp-page="/Account/Manage/Index" style="color: @(isBlack ? "#30363A" : "white")">
+                <span class="line" style="font-weight: 400;letter-spacing:0.2rem">ЛИЧНЫЙ КАБИНЕТ</span>
+                <img class="img-svg" src="@(isBlack ? "/img/icons/fi_user.svg" : "/img/icons/user.svg")" alt="">
+            </a>
+        }
+        else
+        {
+            <a class="header__button line-btn" asp-area="Identity" asp-page="/Account/Manage/Star" style="color: @(isBlack ? "#30363A" : "white")">
+                <span class="line">войти</span>
+                <img class="img-svg" src="~/img/icons/signin.svg" alt="">
+            </a>
+        }
+    </div>
+</header>
