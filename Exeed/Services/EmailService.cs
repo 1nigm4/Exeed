@@ -22,7 +22,7 @@ namespace Exeed.Services
             {
                 // необходимо привязать номер к аккаунту VDS для разблокировки порта
                 await client.ConnectAsync("smtp.timeweb.ru", 465, true); 
-                await client.AuthenticateAsync("info@exeed2024.ru", "$zU8on$z$#cW");
+                await client.AuthenticateAsync("info@exeed2024.ru", "***************");
                 await client.SendAsync(emailMessage);
 
                 await client.DisconnectAsync(true);
