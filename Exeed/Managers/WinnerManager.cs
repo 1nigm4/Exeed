@@ -1,5 +1,5 @@
 ﻿using Exeed.DAL.Repositories;
-using Exeed.Data.Models;
+using Exeed.Domain.Models;
 
 namespace Exeed.Managers
 {
@@ -16,6 +16,7 @@ namespace Exeed.Managers
         {
             var winners = await _repository.ReadAsync();
             winners.OrderBy(w => w.WonAt);
+
             return winners.OrderByDescending(w => w.WonAt);
         }
 

@@ -3,7 +3,6 @@
 @model IndexModel
 @{
     ViewData["Title"] = "Личный кабинет";
-    ViewData["ActivePage"] = ManageNavPages.Index;
     var account = await AccountManager.GetAsync(User);
     string phoneNumber = account.User.PhoneNumber;
     phoneNumber = phoneNumber.Split("-")[0] + "-**-**";
@@ -38,7 +37,7 @@
             <form class="user__desire user__column" id="frm" method="post" enctype="multipart/form-data">
                 <div class="user__title">Ваше желание</div>
                 <div class="user__desire-text" style="min-height: 15rem;">@account.Desire.Text</div>
-                @if ((account.Desire?.IsVerified ?? false) || account.Role == Exeed.Data.Models.Role.Moderator)
+                @if ((account.Desire?.IsVerified ?? false) || account.Role == Exeed.Domain.Models.Role.Moderator)
                 {
                     <a class="t-btn brown" asp-area="Identity" asp-page="/Account/Manage/Desires" style="color: white"><span>Перейти к желаниям</span></a>
                 }
@@ -62,63 +61,15 @@
                     </label>
                 }
             </form>
-            @* <div class="user__gifts user__column">
-                <div class="user__title">Ваши подарок</div>
-                <div class="user__gifts-box">
-                    <div class="gift__item">
-                        <img class="icon" src="~/img/icons/fi_gift.svg" alt="">
-                        <div class="title">
-                            Подписка на Яндекс.Музыку на&nbsp;1&nbsp;мес. + новогодний плейлист от
-                            EXEED
-                        </div>
-                    </div>
-                    <div class="gift__item">
-                        <img class="icon" src="~/img/icons/fi_gift.svg" alt="">
-                        <div class="title">
-                            Бесплатный билет
-                            <br>на посещение
-                            <br>катка в ГУМ
-                        </div>
-                    </div>
-                    <div class="gift__item">
-                        <img class="icon" src="~/img/icons/fi_gift.svg" alt="">
-                        <div class="title">
-                            Сувенир
-                            <br>от бренда -
-                            <br>новогодние свечи
-                        </div>
-                    </div>
-                </div>
-            </div> *@
         </div>
     </div>
 </section>
 
-@* <h3>@ViewData["Title"]</h3>
-<partial name="_StatusMessage" for="StatusMessage" />
-<div class="row">
-    <div class="col-md-6">
-        <form id="profile-form" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-floating">
-                <input asp-for="Username" class="form-control" disabled />
-                <label asp-for="Username" class="form-label"></label>
-            </div>
-            <div class="form-floating">
-                <input asp-for="Input.PhoneNumber" class="form-control" />
-                <label asp-for="Input.PhoneNumber" class="form-label"></label>
-                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
-            </div>
-            <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
-        </form>
-    </div>
-</div>
- *@
 @section Scripts {
     <script type="text/javascript">
         jQuery(function(){
-          $("#sbm").change(function(){ // событие выбора файла
-            $("#frm").submit(); // отправка формы
+          $("#sbm").change(function(){
+            $("#frm").submit();
           });
         });
     </script>

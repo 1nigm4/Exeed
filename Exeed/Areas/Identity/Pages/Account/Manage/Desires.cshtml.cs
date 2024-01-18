@@ -1,4 +1,4 @@
-using Exeed.Data.Models;
+using Exeed.Domain.Models;
 using Exeed.Managers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

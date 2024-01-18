@@ -1,5 +1,5 @@
 ﻿using Exeed.DAL.Repositories;
-using Exeed.Data.Models;
+using Exeed.Domain.Models;
 
 namespace Exeed.Managers
 {
@@ -29,6 +29,7 @@ namespace Exeed.Managers
             {
                 Text = text
             };
+
             bool created = await _repository.CreateAsync(desire);
             return created ? desire : null;
         }
@@ -43,6 +44,7 @@ namespace Exeed.Managers
         {
             var desire = await _repository.ReadAsync(desireId);
             if (desire.IsVerified.HasValue) return;
+
             desire.IsVerified = isVerified;
             await _repository.UpdateAsync(desire);
         }

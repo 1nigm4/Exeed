@@ -1,5 +1,5 @@
 ﻿using Exeed.DAL.Repositories;
-using Exeed.Data.Models;
+using Exeed.Domain.Models;
 
 namespace Exeed.Managers
 {

@@ -1,4 +1,4 @@
-﻿using Exeed.Data.Models;
+﻿using Exeed.Domain.Models;
 using Exeed.Models;
 using Microsoft.Extensions.Options;
 
@@ -22,11 +22,11 @@ namespace Exeed.Managers
 
         public async Task CheckWinnersAsync()
         {
-            DateTime? last = await _winnerManager.GetLastDateTimeWinnerAsync();
-            var config = _configuration.Value;
             DateTime now = DateTime.Now;
-            TimeSpan range = new TimeSpan(config.EventTime.Hours + 1, config.EventTime.Minutes, config.EventTime.Seconds);
-            if ((last == null || (now.Day >= last?.Day + 7)) && (now.TimeOfDay > config.EventTime && now.TimeOfDay < range))
+            DateTime? lastWinerDate = await _winnerManager.GetLastDateTimeWinnerAsync();
+            var config = _configuration.Value;
+            TimeSpan checkingRange = new TimeSpan(config.EventTime.Hours + 1, config.EventTime.Minutes, config.EventTime.Seconds);
+            if ((lastWinerDate == null || (now.Day >= lastWinerDate?.Day + 7)) && (now.TimeOfDay > config.EventTime && now.TimeOfDay < checkingRange))
             {
                 var winners = await GetWinnersAsync();
                 await SetWinnersAsync(winners);

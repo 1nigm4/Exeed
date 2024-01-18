@@ -83,7 +83,7 @@
                     </div>
                 </div>
             </div>
-            @if ((account.Desire?.IsVerified ?? false) || account.Role == Exeed.Data.Models.Role.Moderator)
+            @if ((account.Desire?.IsVerified ?? false) || account.Role == Exeed.Domain.Models.Role.Moderator)
             {
                 <a class="t-btn brown" asp-area="Identity" asp-page="/Account/Manage/Desires" style="color: white"><span>Перейти к желаниям</span></a>
             }
@@ -110,10 +110,6 @@
     </div>
 </section>
 <section class="winners-section">
-    @* <div class="container">
-        <h1 class="s-title">Победитель еще не определен</h1>
-        <h3 s-title="" style="text-align: center; margin-top: 1rem;">Ближайший розыгрыш состоится 1&nbsp;января 2024&nbsp;года</h3>
-    </div> *@
     <div class="container">
         <h1 class="s-title">Победители прошлых розыгрышей</h1>
         <h3 s-title="" style="text-align: center; margin-top: 1rem;">Следующий розыгрыш состоится @config.Value.EventDate</h3>
@@ -122,7 +118,7 @@
                 var winners = await WinnerManager.GetWinnersAsync();
                 <div class="winners__column">
                     <div class="title">Бесплатные билеты на каток</div>
-                    @foreach (var winner in winners.Where(w => w.Prize == Exeed.Data.Models.Prize.Ticket))
+                    @foreach (var winner in winners.Where(w => w.Prize == Exeed.Domain.Models.Prize.Ticket))
                     {
                         var acc = await AccountManager.GetAsync(winner.Desire);
                         <div class="winner__name">@acc.FirstName</div>
@@ -131,7 +127,7 @@
                 </div>
                 <div class="winners__column">
                     <div class="title">Новогодние подарки</div>
-                    @foreach (var winner in winners.Where(w => w.Prize == Exeed.Data.Models.Prize.Gift))
+                    @foreach (var winner in winners.Where(w => w.Prize == Exeed.Domain.Models.Prize.Gift))
                     {
                         var acc = await AccountManager.GetAsync(winner.Desire);
                         <div class="winner__name">@acc.FirstName</div>
@@ -139,7 +135,7 @@
                 </div>
                 <div class="winners__column">
                     <div class="title">Новогодний плейлист +&nbsp;3&nbsp;мес.&nbsp;музыки</div>
-                    @foreach (var winner in winners.Where(w => w.Prize == Exeed.Data.Models.Prize.Music))
+                    @foreach (var winner in winners.Where(w => w.Prize == Exeed.Domain.Models.Prize.Music))
                     {
                         var acc = await AccountManager.GetAsync(winner.Desire);
                         <div class="winner__name">@acc.FirstName</div>
@@ -153,8 +149,8 @@
 @section Scripts{
     <script type="text/javascript">
         jQuery(function () {
-            $("#sbm").change(function () { // событие выбора файла
-                $("#frm").submit(); // отправка формы
+            $("#sbm").change(function () {
+                $("#frm").submit();
             });
         });
 

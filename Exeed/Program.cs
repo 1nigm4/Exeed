@@ -1,6 +1,7 @@
 using Exeed.DAL.Repositories;
-using Exeed.Data;
+using Exeed.Domain;
 using Exeed.Managers;
+using Exeed.Extensions;
 using Exeed.Models;
 using Exeed.Services;
 using Microsoft.AspNetCore.Identity;
@@ -18,7 +19,6 @@ namespace Exeed
             var config = new Configuration();
             builder.Services.Configure<Configuration>(builder.Configuration.GetSection("Configuration"));
 
-            // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString)
@@ -48,9 +48,6 @@ namespace Exeed
             builder.Services.AddScoped<EventManager>();
 
             var app = builder.Build();
-
-
-            // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseMigrationsEndPoint();
@@ -58,7 +55,6 @@ namespace Exeed
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
@@ -74,11 +70,8 @@ namespace Exeed
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
-
-            var scope = app.Services.CreateScope();
-            var service = scope.ServiceProvider.GetService<EventManager>();
-            service.CheckWinnersAsync();
-            app.Run();
+            
+            app.RunApplicationAsync().GetAwaiter().GetResult();
         }
     }
 }

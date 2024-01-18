@@ -1,7 +1,7 @@
 using Exeed.Managers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.ComponentModel.DataAnnotations;
+
 #nullable disable
 namespace Exeed.Areas.Identity.Pages.Account.Manage
 {

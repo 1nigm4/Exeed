@@ -1,5 +1,5 @@
 ﻿using Exeed.DAL.Repositories;
-using Exeed.Data.Models;
+using Exeed.Domain.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
@@ -21,6 +21,7 @@ namespace Exeed.Managers
                 User = user,
                 FirstName = firstName
             };
+
             bool result = await _repository.CreateAsync(account);
             return result;
         }
@@ -48,22 +49,5 @@ namespace Exeed.Managers
             account.Desire = desire;
             await _repository.UpdateAsync(account);
         }
-
-        /*public async Task<bool> AddWish(string accountId, Wish wish)
-        {
-            Account? account = await GetAsync(accountId);
-            if (account == null) return false;
-
-            account.Wish = wish;
-            bool result = await _repository.UpdateAsync(account);
-            return result;
-        }
-
-        public async Task<bool> LikeAsync(Account account, Wish wish)
-        {
-            if (wish == account.Wish) return false;
-            account.LikedWishes.Add(wish);
-            return await _repository.UpdateAsync(account);
-        }*/
     }
 }
